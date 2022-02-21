@@ -4,6 +4,13 @@ Create a CSV file from Orange Theory Fitness workout summary emails using a brow
 
 ## Installation
 
+The code is available from [GitHub](https://github.com/JimmyVanHout/otf_data). Install the dependencies:
+
+```
+pip3 install flask
+pip3 install bs4
+```
+
 ## Usage
 
 Run:
