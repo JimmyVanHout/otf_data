@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="{{ url_for('static', filename='user_interface.js')}}">
+        </script>
+        <title>
+            User Interface
+        </title>
+    </head>
+    <body>
+        <form id="user_input_form" action="{{ url_for('user_interface') }}" method="post">
+            <label for="should_forward">
+                Need to forward emails from another account
+            </label>
+            <input type="checkbox" id="should_forward" name="should_forward" onClick="displayOnCheck(this)">
+            <br>
+            <div id="forwarding_input">
+            </div>
+            {% set elements = [("email_address", "Email address: "), ("password", "Password: "), ("originating_email_addresses", "Comma-separated originating email addresses: "), ("mailbox", "Mailbox (left blank, default is \"inbox\")")] %}
+            {% for element in elements %}
+            <label for="{{ element[0] }}" id="{{ element[0] }}">
+                {{ element[1] }}
+            </label>
+            <input type="text" id="{{ element[0] }}" name="{{ element[0] }}">
+            <br>
+            {% endfor %}
+            <label for="only_search_new">
+                Only search for new emails?
+            </label>
+            <input type="checkbox" id="only_search_new" name="only_search_new">
+            <br>
+            <input type="submit" id="submit_form">
+        </form>
+    </body>
+</html>
