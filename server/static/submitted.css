@@ -1,0 +1,11 @@
+p {
+    font-family: arial;
+    color: #ED7010;
+    font-size: 36px;
+    text-align: center;
+}
+.submitted_text {
+    background-color: white;
+    padding: 20px;
+    vertical-align: middle;
+}

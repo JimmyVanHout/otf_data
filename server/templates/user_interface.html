@@ -3,33 +3,41 @@
     <head>
         <script src="{{ url_for('static', filename='user_interface.js')}}">
         </script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='user_interface.css') }}">
         <title>
-            User Interface
+            OTF Data
         </title>
     </head>
     <body>
-        <form id="user_input_form" action="{{ url_for('user_interface') }}" method="post">
-            <label for="should_forward">
-                Need to forward emails from another account
-            </label>
-            <input type="checkbox" id="should_forward" name="should_forward" onClick="displayOnCheck(this)">
-            <br>
-            <div id="forwarding_input">
-            </div>
-            {% set elements = [("email_address", "Email address: "), ("password", "Password: "), ("originating_email_addresses", "Comma-separated originating email addresses: "), ("mailbox", "Mailbox (left blank, default is \"inbox\")")] %}
-            {% for element in elements %}
-            <label for="{{ element[0] }}" id="{{ element[0] }}">
-                {{ element[1] }}
-            </label>
-            <input type="text" id="{{ element[0] }}" name="{{ element[0] }}">
-            <br>
-            {% endfor %}
-            <label for="only_search_new">
-                Only search for new emails?
-            </label>
-            <input type="checkbox" id="only_search_new" name="only_search_new">
-            <br>
-            <input type="submit" id="submit_form">
-        </form>
+        <div class="input_form_div">
+            <h1>OTF Data</h1>
+            <form id="user_input_form" action="{{ url_for('user_interface') }}" method="post">
+                <label for="should_forward">
+                    Need to forward emails from another account?
+                </label>
+                <input type="checkbox" id="should_forward" name="should_forward" onClick="displayOnCheck(this)">
+                <div id="forwarding_input">
+                </div>
+                <div id="searching_input">
+                    <h2 id="searching_heading">Get OT Beat Report Data from This Account:</h2>
+                    {% set elements = [("email_address", "Email address: ", "text"), ("password", "Password: ", "password"), ("originating_email_addresses", "Comma-separated originating email addresses: ", "text"), ("mailbox", "Mailbox (left blank, default is \"inbox\"):", "text")] %}
+                    {% for element in elements %}
+                    <label for="{{ element[0] }}" id="{{ element[0] }}">
+                        {{ element[1] }}
+                    </label>
+                    <input type="{{ element[2] }}" id="{{ element[0] }}" name="{{ element[0] }}">
+                    <br>
+                    {% endfor %}
+                    <br>
+                    <label for="only_search_new">
+                        Only search for new emails?
+                    </label>
+                    <input type="checkbox" id="only_search_new" name="only_search_new">
+                    <br>
+                    <br>
+                    <input type="submit" id="submit_form">
+                </div>
+            </form>
+        </div>
     </body>
 </html>

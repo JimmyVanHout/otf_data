@@ -10,4 +10,4 @@ def user_interface():
     else:
         with open("user_input.json", "w") as file:
             file.write(json.dumps(request.form))
-        return "Submitted! You may close this page."
+        return render_template("submitted.html")
