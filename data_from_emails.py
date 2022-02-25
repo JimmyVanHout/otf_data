@@ -8,7 +8,7 @@ import ssl
 import sys
 import traceback
 
-COLUMN_LABELS = ["location", "date", "start_time", "trainer_name", "grey_zone", "blue_zone", "green_zone", "orange_zone", "red_zone", "calories", "splat_points", "avg_heart_rate", "max_heart_rate", "num_steps", "treadmill_distance", "treadmill_time", "avg_velocity", "max_velocity", "avg_incline", "max_incline", "avg_pace", "max_pace", "elevation", "rower_distance", "rower_time", "rower_avg_power", "rower_max_power", "rower_avg_velocity", "rower_max_velocity", "rower_500m_split_avg_pace", "rower_500m_split_max_pace", "rower_avg_stroke_rate"]
+COLUMN_LABELS = ["location", "date", "start_time", "coach", "grey_zone", "blue_zone", "green_zone", "orange_zone", "red_zone", "calories", "splat_points", "avg_heart_rate", "max_heart_rate", "num_steps", "treadmill_distance", "treadmill_time", "avg_velocity", "max_velocity", "avg_incline", "max_incline", "avg_pace", "max_pace", "elevation", "rower_distance", "rower_time", "rower_avg_power", "rower_max_power", "rower_avg_velocity", "rower_max_velocity", "rower_500m_split_avg_pace", "rower_500m_split_max_pace", "rower_avg_stroke_rate"]
 DATA_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 15, 17, 19, 22, 25, 28, 30, 33, 35, 39, 40, 43, 46, 49, 52, 54, 58, 60, 64, 66, 70]
 IMAP_SERVER = "imap.gmail.com"
 PORT = "993"
@@ -21,7 +21,6 @@ def remove_duplicates(lst):
     lst.clear()
     for element in unique:
         lst.append(element)
-    return unique
 
 def merge_columns(rows, starting_column_index):
     for row in rows:
@@ -30,13 +29,13 @@ def merge_columns(rows, starting_column_index):
         row.pop(3)
 
 def sort_rows(rows):
-    dts_and_rows = []
-    for row in rows:
-        dt = datetime.datetime.strptime(row[1] + " " + row[2], "%m/%d/%Y %I:%M %p")
-        dts_and_rows.append((dt, row))
-    dts_and_rows.sort(key=lambda dt_and_row: dt_and_row[0])
-    sorted_rows = list(map(lambda dt_and_row: dt_and_row[1], dts_and_rows))
-    return sorted_rows
+    for i in range(len(rows)):
+        dt = datetime.datetime.strptime(rows[i][1] + " " + rows[i][2], "%m/%d/%Y %I:%M %p")
+        rows[i] = (dt, rows[i])
+    rows.sort(key=lambda dt_and_row: dt_and_row[0])
+    for i in range(len(rows)):
+        dt, row = rows[i]
+        rows[i] = row
 
 def pretty_print_row(row):
     for i in range(len(row)):
@@ -103,12 +102,12 @@ def find_row_specific_errors(row):
 def remove_errors(rows):
     indices_to_remove = []
     errors = {}
-    for i in range(1, len(rows)):
+    for i in range(len(rows)):
         row_specific_errors = find_row_specific_errors(rows[i])
         if len(row_specific_errors) != 0:
             indices_to_remove.append(i)
             errors[i] = (rows[i], row_specific_errors)
-    for i in range(len(rows) - 1, 0, -1):
+    for i in range(len(rows) - 1, -1, -1):
         if i in indices_to_remove:
             rows.pop(i)
     return errors
@@ -156,7 +155,7 @@ def get_current_rows(data_file_name):
     return rows
 
 def get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new=False, data_file_name=None):
-    rows = [COLUMN_LABELS]
+    rows = []
     if only_new and data_file_name:
         rows += get_current_rows(data_file_name)
     try:
@@ -186,9 +185,10 @@ def get_data_from_emails(email_address, password, originating_email_addresses, m
         imap4ssl.logout()
     except Exception as e:
         raise Exception("Error interacting with mail server or processing data: " + str(e))
-    rows = remove_duplicates(rows)
-    rows = sort_rows(rows[1:])
+    remove_duplicates(rows)
+    sort_rows(rows)
     errors = remove_errors(rows)
+    rows = [COLUMN_LABELS] + rows
     print("\nFound and removed " + str(len(errors)) + " data frames with errors\n")
     print("Error rate: {error_rate:.2f}%\n".format(error_rate=((len(errors) / len(rows)) * 100)))
     if len(errors) > 0:
