@@ -15,27 +15,39 @@ label {
 }
 input[type=text] {
     width: 100%;
-    padding: 10px 16px;
+    padding: 8px 12px;
     margin: 12px 0px;
     border: none;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #C4C4C4;
+    background-color: #F7F7F7;
     color: #ED7010;
     font-family: arial;
-    font-size: 16px;
+    font-size: 18px;
+}
+input[type=email] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 12px 0px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #F7F7F7;
+    color: #ED7010;
+    font-family: arial;
+    font-size: 18px;
 }
 input[type=password] {
     width: 100%;
-    padding: 10px 16px;
+    padding: 8px 12px;
     margin: 12px 0px;
     border: none;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #C4C4C4;
+    background-color: #F7F7F7;
     color: #ED7010;
     font-family: arial;
-    font-size: 16px;
+    font-size: 18px;
 }
 input[type=submit] {
     width: 100%;
@@ -54,7 +66,14 @@ input[type=submit]:hover {
     background-color: #DC7322;
     color: white;
 }
-.input_form_div {
+.error_message {
+    color: red;
+    font-family: arial;
+    font-size: 16px;
+}
+#input_form_div {
     background-color: white;
     padding: 20px;
+    width: 40%;
+    margin: auto;
 }

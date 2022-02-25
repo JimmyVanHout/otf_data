@@ -9,9 +9,9 @@
         </title>
     </head>
     <body>
-        <div class="input_form_div">
-            <h1>OTF Data</h1>
-            <form id="user_input_form" action="{{ url_for('user_interface') }}" method="post">
+        <div id="input_form_div">
+            <form id="user_input_form" action="{{ url_for('user_interface') }}" method="post" onSubmit="return checkAllPasswordsMatch();">
+                <h1>OTF Data</h1>
                 <label for="should_forward">
                     Need to forward emails from another account?
                 </label>
@@ -20,23 +20,25 @@
                 </div>
                 <div id="searching_input">
                     <h2 id="searching_heading">Get OT Beat Report Data from This Account:</h2>
-                    {% set elements = [("email_address", "Email address: ", "text"), ("password", "Password: ", "password"), ("originating_email_addresses", "Comma-separated originating email addresses: ", "text"), ("mailbox", "Mailbox (left blank, default is \"inbox\"):", "text")] %}
+                    {% set elements = [("email_address", "Email address: ", "email"), ("password", "Password: ", "password"), ("confirm_password", "Confirm Password: ", "password"), ("originating_email_addresses", "Comma-separated originating email addresses: ", "text"), ("mailbox", "Mailbox (left blank, default is \"inbox\"):", "text")] %}
                     {% for element in elements %}
-                    <label for="{{ element[0] }}" id="{{ element[0] }}">
+                    <label for="{{ element[0] }}" id="{{ element[0] }}_label">
                         {{ element[1] }}
                     </label>
                     <input type="{{ element[2] }}" id="{{ element[0] }}" name="{{ element[0] }}">
                     <br>
                     {% endfor %}
                     <br>
-                    <label for="only_search_new">
-                        Only search for new emails?
-                    </label>
-                    <input type="checkbox" id="only_search_new" name="only_search_new">
-                    <br>
-                    <br>
-                    <input type="submit" id="submit_form">
                 </div>
+                <label for="only_search_new">
+                    Only search for new emails?
+                </label>
+                <input type="checkbox" id="only_search_new" name="only_search_new">
+                <br>
+                <br>
+                <div id="above_submit">
+                </div>
+                <input type="submit" id="submit_form">
             </form>
         </div>
     </body>
