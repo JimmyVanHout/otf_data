@@ -21,6 +21,7 @@ def remove_duplicates(lst):
     lst.clear()
     for element in unique:
         lst.append(element)
+    return unique
 
 def merge_columns(rows, starting_column_index):
     for row in rows:
@@ -28,33 +29,14 @@ def merge_columns(rows, starting_column_index):
         row.pop(4)
         row.pop(3)
 
-def convert_time_12_to_24(time_12):
-    time_24 = datetime.datetime.strftime(datetime.datetime.strptime(time_12, "%I:%M %p"), "%H:%M")
-    return time_24
-
-def convert_time_24_to_12(time_24):
-    time_12 = datetime.datetime.strftime(datetime.datetime.strptime(time_24, "%H:%M"), "%I:%M %p")
-    return time_12
-
-def convert_date_mdy_to_ymd(date_mdy):
-    date_ymd = datetime.datetime.strftime(datetime.datetime.strptime(date_mdy, "%m/%d/%Y"), "%Y/%m/%d")
-    return date_ymd
-
-def convert_date_ymd_to_mdy(date_ymd):
-    date_mdy = datetime.datetime.strftime(datetime.datetime.strptime(date_ymd, "%Y/%m/%d"), "%m/%d/%Y")
-    return date_mdy
-
 def sort_rows(rows):
+    dts_and_rows = []
     for row in rows:
-        row[2] = convert_time_12_to_24(row[2])
-    rows.sort(key=lambda row: row[2])
-    for row in rows:
-        row[2] = convert_time_24_to_12(row[2])
-    for row in rows:
-        row[1] = convert_date_mdy_to_ymd(row[1])
-    rows.sort(key=lambda row: row[1])
-    for row in rows:
-        row[1] = convert_date_ymd_to_mdy(row[1])
+        dt = datetime.datetime.strptime(row[1] + " " + row[2], "%m/%d/%Y %I:%M %p")
+        dts_and_rows.append((dt, row))
+    dts_and_rows.sort(key=lambda dt_and_row: dt_and_row[0])
+    sorted_rows = list(map(lambda dt_and_row: dt_and_row[1], dts_and_rows))
+    return sorted_rows
 
 def pretty_print_row(row):
     for i in range(len(row)):
@@ -165,11 +147,12 @@ def get_message_search_str(only_new, data_file_name, originating_email_address):
 
 def get_current_rows(data_file_name):
     rows = []
-    with open(data_file_name, "r") as file:
-        csv_reader = csv.reader(file, delimiter=",")
-        next(csv_reader) # skip header
-        for row in csv_reader:
-            rows.append(row)
+    if data_file_name in os.listdir():
+        with open(data_file_name, "r") as file:
+            csv_reader = csv.reader(file, delimiter=",")
+            next(csv_reader) # skip header
+            for row in csv_reader:
+                rows.append(row)
     return rows
 
 def get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new=False, data_file_name=None):
@@ -203,8 +186,8 @@ def get_data_from_emails(email_address, password, originating_email_addresses, m
         imap4ssl.logout()
     except Exception as e:
         raise Exception("Error interacting with mail server or processing data: " + str(e))
-    remove_duplicates(rows)
-    sort_rows(rows[1:])
+    rows = remove_duplicates(rows)
+    rows = sort_rows(rows[1:])
     errors = remove_errors(rows)
     print("\nFound and removed " + str(len(errors)) + " data frames with errors\n")
     print("Error rate: {error_rate:.2f}%\n".format(error_rate=((len(errors) / len(rows)) * 100)))
