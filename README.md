@@ -11,6 +11,12 @@ pip3 install flask
 pip3 install bs4
 ```
 
+## Gmail Account Configuration
+
+If you chose to use the forwarding feature (see below), you will need to temporarily [disable two-factor authentication](https://support.google.com/accounts/answer/1064203?hl=en&co=GENIE.Platform%3DDesktop) and [allow "less secure app" access](https://support.google.com/accounts/answer/6010255?hl=en) in your [Google account security settings](https://myaccount.google.com/intro/security) for the account you wish to forward from. It is recommended that you [enable two factor authentication](https://www.google.com/landing/2step/) and [disable "less secure app" access](https://support.google.com/accounts/answer/6010255?hl=en) after you have finished running the program, in order to maintain the security of your account.
+
+The new Gmail account that you will likely want to create (also see below) should permanently have its two-factor authentication disabled and permission for "less secure app" access turned on, as these settings are required for the main functionality of the program.
+
 ## Usage
 
 Run:
@@ -32,6 +38,8 @@ Therefore, the following steps should generally be taken when using the program:
 1. Create a new [Gmail account](https://support.google.com/mail/answer/56256?hl=en).
 
 1. Set up a [filter](https://support.google.com/mail/answer/6579?hl=en) on the account that typically receives `otbeatreport@orangetheoryfitness.com`. The filter should forward all future mail from `otbeatreport@orangetheoryfitness.com` to the new Gmail account.
+
+1. Perform the configuration steps outlined in the [Gmail Account Configuration](#gmail-account-configuration) section.
 
 1. Run the program (see above). Select the option to forward all past emails from `otbeatreport@orangetheoryfitness.com` to the new account. To make the program run faster in the future, select the option to only search for new `otbeatreport@orangetheoryfitness.com` emails--this searches only for emails received on or after the latest workout record present in the data file, `data.csv`. Since the data file does not exist when first running the program, all emails will be searched for the first time it is run regardless of whether the option is selected.
 
