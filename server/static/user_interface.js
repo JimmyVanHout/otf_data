@@ -59,8 +59,8 @@ function checkAllPasswordsMatch() {
     let forwarding_password = document.getElementById("forwarding_password");
     let forwarding_passwords_match = true;
     if (forwarding_password) {
-        forwarding_passwords_match = checkPasswordsMatch("forwarding_password", "forwarding_confirm_password", "Passwords for account to forward messages from do not match.", "forwarding_passwords_error");
+        forwarding_passwords_match = checkPasswordsMatch("forwarding_password", "forwarding_confirm_password", "Passwords for account to forward messages from did not match. Please reenter them and then resubmit.", "forwarding_passwords_error");
     }
-    let searching_passwords_match = checkPasswordsMatch("password", "confirm_password", "Passwords for account to get OT data from do not match.", "searching_passwords_error");
+    let searching_passwords_match = checkPasswordsMatch("password", "confirm_password", "Passwords for account to get OT data from did not match. Please reenter them and then resubmit.", "searching_passwords_error");
     return forwarding_passwords_match && searching_passwords_match;
 }

@@ -20,7 +20,7 @@ input[type=text] {
     border: none;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #F7F7F7;
+    background-color: #F1F1F1;
     color: #ED7010;
     font-family: arial;
     font-size: 18px;
@@ -32,7 +32,7 @@ input[type=email] {
     border: none;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #F7F7F7;
+    background-color: #F1F1F1;
     color: #ED7010;
     font-family: arial;
     font-size: 18px;
@@ -44,7 +44,7 @@ input[type=password] {
     border: none;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #F7F7F7;
+    background-color: #F1F1F1;
     color: #ED7010;
     font-family: arial;
     font-size: 18px;
