@@ -11,6 +11,8 @@ pip3 install flask
 pip3 install bs4
 ```
 
+Note that this program writes the files `config.txt` and `data.csv`, and **it will overwrite any** `data.csv` **file that already exists in the same directory**.
+
 ## Gmail Account Configuration
 
 If you chose to use the forwarding feature (see below), you will need to temporarily [disable two-factor authentication](https://support.google.com/accounts/answer/1064203?hl=en&co=GENIE.Platform%3DDesktop) and [allow "less secure app" access](https://support.google.com/accounts/answer/6010255?hl=en) in your [Google account security settings](https://myaccount.google.com/intro/security) for the account you wish to forward from. It is recommended that you [enable two factor authentication](https://www.google.com/landing/2step/) and [disable "less secure app" access](https://support.google.com/accounts/answer/6010255?hl=en) after you have finished running the program, in order to maintain the security of your account.
@@ -35,7 +37,7 @@ This program should be used to extract data from `otbeatreport@orangetheoryfitne
 
 Since the configuration file contains the user's **unencrypted** email password, you may want to set up a new Gmail account to use with this program (see below). While there is no reason that this password should be compromised if proper security precautions are taken, in the event that it were, the only compromised data would be the workout summaries from `otbeatreport@orangetheoryfitness.com`. Regardless, it is highly recommended to set up a new Gmail account so that you do not have to toggle the security settings described in the [Gmail Account Configuration](#gmail-account-configuration) section each time you want to run the program.
 
-The following steps are recommended when using this program:
+Therefore, the following steps are recommended the first time you use this program:
 
 1. Create a new [Gmail account](https://support.google.com/mail/answer/56256?hl=en).
 
@@ -45,6 +47,6 @@ The following steps are recommended when using this program:
 
 1. Run the program (see above). Select the option to forward all past emails from `otbeatreport@orangetheoryfitness.com` to the new account. To make the program run faster in the future, select the option to only search for new `otbeatreport@orangetheoryfitness.com` emails--this searches only for emails received on or after the latest workout record present in the data file, `data.csv`. Since the data file does not exist when first running the program, all emails will be searched for the first time it is run even if the option is selected.
 
-The program will then forward all the past emails to your new account, retrieve the data from the new account, and generate a `data.csv` file containing the workout data. Note that this program writes the files `config.txt` and `data.csv`, and **it will overwrite any** `data.csv` **file that already exists in the same directory**. Erroneous data is not written to the data file and is instead written to standard output. The error rate in testing was typically very small.
+The program will then forward all the past emails to your new account, retrieve the data from the new account, and generate a `data.csv` file containing the workout data. Erroneous data is not written to the data file and is instead written to standard output. The error rate in testing was typically very small.
 
 After the initial setup, you will **not** need to repeat all of these steps the next time you want to run the program to obtain the latest data, nor will you need to go through the user interface. Simply run the program whenever you want to get the latest data.
