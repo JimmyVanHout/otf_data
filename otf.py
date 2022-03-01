@@ -96,7 +96,7 @@ def terminal_exec():
 
 def browser_exec():
     if CONFIG_FILE_NAME not in os.listdir():
-        server_process = subprocess.Popen("flask run".split(), cwd="./server")
+        server_process = subprocess.Popen("python3 -m flask run".split(), cwd="./server")
         time.sleep(1)
         webbrowser.open(USER_INTERFACE_URL)
         data = None
