@@ -50,7 +50,7 @@ def pretty_print_text(text):
 
 def clean_text(text):
     text = [e.encode("ascii", "ignore").decode("utf-8").strip() for e in text]
-    to_remove = ["Peak HR:", "Max:", "Fastest:"]
+    to_remove = ["Peak HR:", "Max:", "Fastest:", ","]
     for i in range(len(text)):
         for s in to_remove:
             text[i] = text[i].replace(s, "")
@@ -74,7 +74,7 @@ def get_row_from_data(data, data_indices):
 
 def find_row_specific_errors(row):
     row_specific_errors = []
-    location_pattern = re.compile(r"^(?:.*?, \w{2})*$")
+    location_pattern = re.compile(r"^(?:.*? \w{2})*$")
     date_pattern = re.compile(r"^(?:\d{1,2}\/\d{1,2}\/\d{4})*$")
     time_of_day_pattern = re.compile(r"^(?:\d{1,2}:\d{2} (?:A|P)M)*$")
     trainer_name_pattern = re.compile(r"^(?:\w+)*$")
