@@ -24,7 +24,7 @@ The new Gmail account that you will likely want to create (also see below) shoul
 Run:
 
 ```
-python3 otf.py [--browser|--terminal|--help]
+python3 otf_data.py [--browser|--terminal|--help]
 ```
 
 `--browser` specifies to run the browser user interface (default).
