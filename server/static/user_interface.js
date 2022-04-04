@@ -21,14 +21,10 @@ function displayOnCheck(checkbox) {
             div.appendChild(input);
             div.appendChild(document.createElement("br"));
         }
-        h2 = document.getElementById("searching_heading");
-        h2.innerText = "Then Receive Them Here and Get OT Beat Report Data from This Account:";
     } else {
         for (let i = div.children.length - 1; i >=0; i--) {
             div.children[i].remove();
         }
-        h2 = document.getElementById("searching_heading");
-        h2.innerText = "Get OT Beat Report Data from This Account:";
     }
 }
 
