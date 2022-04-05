@@ -1,6 +1,7 @@
 import batch_send
 import csv
 import data_from_emails
+import getpass
 import json
 import os
 import re
@@ -11,7 +12,7 @@ import traceback
 import webbrowser
 
 RUN_MODE_OPTIONS = ["--browser", "--terminal"]
-VALID_OPTIONS = [*RUN_MODE_OPTIONS, "--help", "--no-config-file"]
+VALID_OPTIONS = [*RUN_MODE_OPTIONS, "--help", "--store-password"]
 CONFIG_FILE_NAME = "config.txt"
 OUTPUT_FILE_NAME = "data.csv"
 USER_INTERFACE_URL = "http://127.0.0.1:5000/user_interface"
@@ -72,9 +73,9 @@ def write_to_output_file(rows, output_file_name):
         for row in rows:
             csv_writer.writerow(row)
 
-def terminal_exec(use_config_file=True):
+def terminal_exec(store_password=False):
     email_address = password = originating_email_addresses= mailbox = only_new = None
-    if CONFIG_FILE_NAME not in os.listdir() or not use_config_file:
+    if CONFIG_FILE_NAME not in os.listdir():
         forward_emails = input("Would you like to forward past otbeatreport@orangetheoryfitness.com emails from one email account to another (yes or no)?: ")
         if forward_emails == "yes":
             email_address, password, receiving_email_address, mailbox = get_forwarding_data_from_terminal_input()
@@ -85,10 +86,15 @@ def terminal_exec(use_config_file=True):
                 traceback.print_exc()
                 sys.exit(1)
         email_address, password, originating_email_addresses, mailbox, only_new = get_config_data_from_terminal_input()
-        if use_config_file:
+        if store_password:
             setup_config_file(email_address, password, originating_email_addresses, mailbox, only_new)
+        else:
+            setup_config_file(email_address, "", originating_email_addresses, mailbox, only_new)
+        originating_email_addresses = originating_email_addresses.split(",")
     else:
         email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
+    if not store_password and password == "":
+        password = getpass.getpass("Password: ")
     rows = None
     try:
         rows = data_from_emails.get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new=True, data_file_name=OUTPUT_FILE_NAME)
@@ -99,9 +105,9 @@ def terminal_exec(use_config_file=True):
     write_to_output_file(rows, OUTPUT_FILE_NAME)
     sys.exit(0)
 
-def browser_exec(use_config_file=True):
+def browser_exec(store_password=False):
     email_address = password = originating_email_addresses= mailbox = only_new = None
-    if CONFIG_FILE_NAME not in os.listdir() or not use_config_file:
+    if CONFIG_FILE_NAME not in os.listdir():
         server_process = subprocess.Popen("python3 -m flask run".split(), cwd="./server")
         time.sleep(1)
         webbrowser.open(USER_INTERFACE_URL)
@@ -127,11 +133,15 @@ def browser_exec(use_config_file=True):
         originating_email_addresses = data["originating_email_addresses"].replace(" ", "")
         mailbox = data["mailbox"].replace(" ", "")
         only_new = True if "only_search_new" in data and data["only_search_new"] == "on" else False
-        if use_config_file:
+        if store_password:
             setup_config_file(email_address, password, originating_email_addresses, mailbox, only_new)
+        else:
+            setup_config_file(email_address, "", originating_email_addresses, mailbox, only_new)
         originating_email_addresses = originating_email_addresses.split(",")
     else:
         email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
+    if not store_password and password == "":
+        password = getpass.getpass("Password: ")
     rows = None
     try:
         rows = data_from_emails.get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new, data_file_name=OUTPUT_FILE_NAME)
@@ -152,7 +162,7 @@ def print_help():
     print("--browser: execute program with browser user interface (default behavior)")
     print("--terminal: execute program with terminal user interface")
     print("--help: get help message")
-    print("--no-config-file: execute program without creating a configuration file or using an existing one")
+    print("--store-password: store password unencrypted in configuration file")
     sys.exit(0)
 
 def get_command_start_index(args):
@@ -181,13 +191,12 @@ if __name__ == "__main__":
     if not is_command_valid(command):
         print_correct_usage()
         sys.exit(1)
-    use_config_file = False if "--no-config-file" in command[1:] else True
-    if len(command) == 1 or (len(command) == 2 and not use_config_file):
-        browser_exec(use_config_file)
+    store_password = True if "--store-password" in command[1:] else False
+    if "--browser" in command[1:]:
+        browser_exec(store_password)
+    elif "--terminal" in command[1:]:
+        terminal_exec(store_password)
+    elif "--help" in command[1:]:
+        print_help()
     else:
-        if "--browser" in command[1:]:
-            browser_exec(use_config_file)
-        elif "--terminal" in command[1:]:
-            terminal_exec(use_config_file)
-        elif "--help" in command[1:]:
-            print_help()
+        browser_exec(store_password)

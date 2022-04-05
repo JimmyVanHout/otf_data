@@ -24,7 +24,7 @@ The new Gmail account that you will likely want to create (also see below) shoul
 Run:
 
 ```
-python3 otf_data.py [--browser|--terminal|--help] [--no-config-file]
+python3 otf_data.py [--browser|--terminal|--help] [--store-password]
 ```
 
 `--browser` specifies to run the browser user interface (default).
@@ -33,11 +33,9 @@ python3 otf_data.py [--browser|--terminal|--help] [--no-config-file]
 
 `--help` brings up the help screen.
 
-`--no-config-file` specifies to run the program without creating a configuration file or using one if it already exists
+`--store-password` specifies whether the password should be stored unencrypted in the configuration file
 
-This program should be used to extract data from `otbeatreport@orangetheoryfitness.com` emails to a CSV file. When the program is run and the `--no-config-file` option is *not* specified, it searches for the configuration file `config.txt`. If the file is not present, the user interface will display and the entered data will be saved to the new configuration file. If the `--no-config-file` option *is* specified, the user interface will display regardless of whether a configuration file already exists, and any information entered *will not* be saved to the file. Note that the browser-based user interface does not retrieve a web page from the internet but rather from a local server that is temporarily run on the host machine.
-
-Since the configuration file contains the user's **unencrypted** email password, you may want to set up a new Gmail account to use with this program (see below). While there is no reason that this password should be compromised if proper security precautions are taken, in the event that it were, the only compromised data would be the workout summaries from `otbeatreport@orangetheoryfitness.com`. If you want, the `--no-config-file` option can be used to prevent the creation of the configuration file. Regardless, it is highly recommended to set up a new Gmail account so that you do not have to toggle the security settings described in the [Gmail Account Configuration](#gmail-account-configuration) section each time you want to run the program.
+This program should be used to extract data from `otbeatreport@orangetheoryfitness.com` emails to a CSV file. When the program is run, it searches for the configuration file `config.txt`. If the file is not present, the user interface will display and the entered data will be saved to the new configuration file. Note that the browser-based user interface does not retrieve a web page from the internet but rather from a local server that is temporarily run on the host machine.
 
 Therefore, the following steps are recommended the first time you use this program:
 
