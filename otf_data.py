@@ -10,6 +10,8 @@ import time
 import traceback
 import webbrowser
 
+RUN_MODE_OPTIONS = ["--browser", "--terminal"]
+VALID_OPTIONS = [*RUN_MODE_OPTIONS, "--help", "--no-config-file"]
 CONFIG_FILE_NAME = "config.txt"
 OUTPUT_FILE_NAME = "data.csv"
 USER_INTERFACE_URL = "http://127.0.0.1:5000/user_interface"
@@ -70,8 +72,9 @@ def write_to_output_file(rows, output_file_name):
         for row in rows:
             csv_writer.writerow(row)
 
-def terminal_exec():
-    if CONFIG_FILE_NAME not in os.listdir():
+def terminal_exec(use_config_file=True):
+    email_address = password = originating_email_addresses= mailbox = only_new = None
+    if CONFIG_FILE_NAME not in os.listdir() or not use_config_file:
         forward_emails = input("Would you like to forward past otbeatreport@orangetheoryfitness.com emails from one email account to another (yes or no)?: ")
         if forward_emails == "yes":
             email_address, password, receiving_email_address, mailbox = get_forwarding_data_from_terminal_input()
@@ -81,9 +84,11 @@ def terminal_exec():
                 print("Error sending mail:" + str(e))
                 traceback.print_exc()
                 sys.exit(1)
-        email_address, password, originating_email_addresses, mailbox = get_config_data_from_terminal_input()
-        setup_config_file(email_address, password, originating_email_addresses, mailbox)
-    email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
+        email_address, password, originating_email_addresses, mailbox, only_new = get_config_data_from_terminal_input()
+        if use_config_file:
+            setup_config_file(email_address, password, originating_email_addresses, mailbox, only_new)
+    else:
+        email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
     rows = None
     try:
         rows = data_from_emails.get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new=True, data_file_name=OUTPUT_FILE_NAME)
@@ -94,8 +99,9 @@ def terminal_exec():
     write_to_output_file(rows, OUTPUT_FILE_NAME)
     sys.exit(0)
 
-def browser_exec():
-    if CONFIG_FILE_NAME not in os.listdir():
+def browser_exec(use_config_file=True):
+    email_address = password = originating_email_addresses= mailbox = only_new = None
+    if CONFIG_FILE_NAME not in os.listdir() or not use_config_file:
         server_process = subprocess.Popen("python3 -m flask run".split(), cwd="./server")
         time.sleep(1)
         webbrowser.open(USER_INTERFACE_URL)
@@ -116,13 +122,16 @@ def browser_exec():
                 print("Error sending mail:" + str(e))
                 traceback.print_exc()
                 sys.exit(1)
-        email_address = data["email_address"]
-        password = data["password"]
-        originating_email_addresses = data["originating_email_addresses"]
-        mailbox = data["mailbox"]
+        email_address = data["email_address"].replace(" ", "")
+        password = data["password"].replace(" ", "")
+        originating_email_addresses = data["originating_email_addresses"].replace(" ", "")
+        mailbox = data["mailbox"].replace(" ", "")
         only_new = True if "only_search_new" in data and data["only_search_new"] == "on" else False
-        setup_config_file(email_address, password, originating_email_addresses, mailbox, only_new)
-    email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
+        if use_config_file:
+            setup_config_file(email_address, password, originating_email_addresses, mailbox, only_new)
+        originating_email_addresses = originating_email_addresses.split(",")
+    else:
+        email_address, password, originating_email_addresses, mailbox, only_new = read_from_config_file()
     rows = None
     try:
         rows = data_from_emails.get_data_from_emails(email_address, password, originating_email_addresses, mailbox, only_new, data_file_name=OUTPUT_FILE_NAME)
@@ -138,24 +147,47 @@ def print_correct_usage():
     sys.exit(1)
 
 def print_help():
-    print("Correct usage: python3 otf.py [--browser|--terminal|--help].")
+    print("Correct usage:\n")
+    print("python3 otf.py [--browser|--terminal|--help] [--no-config-file]")
     print("--browser: execute program with browser user interface (default behavior)")
     print("--terminal: execute program with terminal user interface")
     print("--help: get help message")
+    print("--no-config-file: execute program without creating a configuration file or using an existing one")
     sys.exit(0)
+
+def get_command_start_index(args):
+    for i in range(len(args)):
+        if os.path.basename(os.path.realpath(__file__)) in sys.argv[i]:
+            return i
+
+def is_command_valid(command):
+    if len(command) > 1 and len(command) < 3:
+        for word in command[1:]:
+            if word not in VALID_OPTIONS:
+                return False
+        if "--help" in command[1:] and len(command) > 2:
+            return False
+        run_mode_option_count = 0
+        for option in RUN_MODE_OPTIONS:
+            if option in command[1:]:
+                run_mode_option_count += 1
+            if run_mode_option_count > 1:
+                return False
+    return True
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    if len(sys.argv) == 1:
-        browser_exec()
-    elif len(sys.argv) == 2:
-        if sys.argv[1] == "--terminal":
-            terminal_exec()
-        elif sys.argv[1] == "--browser":
-            browser_exec()
-        elif sys.argv[1] == "--help":
-            print_help()
-        else:
-            print_correct_usage()
-    else:
+    command = sys.argv[get_command_start_index(sys.argv):]
+    if not is_command_valid(command):
         print_correct_usage()
+        sys.exit(1)
+    use_config_file = False if "--no-config-file" in command[1:] else True
+    if len(command) == 1 or (len(command) == 2 and not use_config_file):
+        browser_exec(use_config_file)
+    else:
+        if "--browser" in command[1:]:
+            browser_exec(use_config_file)
+        elif "--terminal" in command[1:]:
+            terminal_exec(use_config_file)
+        elif "--help" in command[1:]:
+            print_help()
