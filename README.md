@@ -39,7 +39,7 @@ The following steps are recommended the first time you use this program:
 
 1. Set up a [filter](https://support.google.com/mail/answer/6579?hl=en) on the account that typically receives `otbeatreport@orangetheoryfitness.com` emails. The filter should forward all future mail from `otbeatreport@orangetheoryfitness.com` to the new Gmail account.
 
-1. Set up an application-specific password on your new Gmail account. Also set one up on the account that typically receives the workout summary emails if you intend use the forwarding feature.
+1. Set up an [application-specific password](https://support.google.com/mail/answer/185833?hl=en-GB) on your new Gmail account. Also set one up on the account that typically receives the workout summary emails if you intend use the forwarding feature.
 
 1. Run the program. In the configuration menu that appears:
 
