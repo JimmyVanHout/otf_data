@@ -8,7 +8,7 @@ import ssl
 import sys
 import traceback
 
-COLUMN_LABELS = ["location", "date", "start_time", "coach", "grey_zone", "blue_zone", "green_zone", "orange_zone", "red_zone", "calories", "splat_points", "avg_heart_rate", "max_heart_rate", "num_steps", "treadmill_distance", "treadmill_time", "avg_velocity", "max_velocity", "avg_incline", "max_incline", "avg_pace", "max_pace", "elevation", "rower_distance", "rower_time", "rower_avg_power", "rower_max_power", "rower_avg_velocity", "rower_max_velocity", "rower_500m_split_avg_pace", "rower_500m_split_max_pace", "rower_avg_stroke_rate"]
+COLUMN_LABELS = ["location", "date", "start_time", "coach", "grey_zone", "blue_zone", "green_zone", "orange_zone", "red_zone", "calories", "splat_points", "avg_heart_rate", "max_heart_rate", "treadmill_num_steps", "treadmill_distance", "treadmill_time", "treadmill_avg_velocity", "treadmill_max_velocity", "treadmill_avg_incline", "treadmill_max_incline", "treadmill_avg_pace", "treadmill_max_pace", "treadmill_elevation", "rower_distance", "rower_time", "rower_avg_power", "rower_max_power", "rower_avg_velocity", "rower_max_velocity", "rower_500m_split_avg_pace", "rower_500m_split_max_pace", "rower_avg_stroke_rate"]
 DATA_INDICES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 15, 17, 19, 22, 25, 28, 30, 33, 35, 39, 40, 43, 46, 49, 52, 54, 58, 60, 64, 66, 70]
 IMAP_SERVER = "imap.gmail.com"
 PORT = "993"
