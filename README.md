@@ -4,14 +4,20 @@ Create a CSV file from OrangeTheory Fitness workout summary emails using a brows
 
 ## Installation
 
-The code is available from [GitHub](https://github.com/JimmyVanHout/otf_data). Install the dependencies:
+Install the code from [GitHub](https://github.com/JimmyVanHout/otf_data):
+
+```
+git clone https://github.com/JimmyVanHout/otf_data.git
+```
+
+Install the dependencies:
 
 ```
 pip3 install flask
 pip3 install bs4
 ```
 
-Note that this program writes the files `config.txt` and `data.csv`, and **it will overwrite any** `config.txt` or `data.csv` **files that already exist in the same directory**.
+Note that this program writes the files `config.txt` and `data.csv`, and **it will overwrite any** `config.txt` **or** `data.csv` **files that already exist in the same directory**.
 
 ## Usage
 
