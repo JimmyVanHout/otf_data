@@ -121,9 +121,12 @@ def browser_exec(store_password=False):
                 time.sleep(1)
         server_process.kill()
         if "should_forward" in data and data["should_forward"] == "on":
-            email_address, password, receiving_email_address, mailbox = list(data.values())[1:5]
+            forwarding_email_address = data["forwarding_email_address"].replace(" ", "")
+            forwarding_password = data["forwarding_password"].replace(" ", "")
+            forwarding_receiving_email_address = data["forwarding_receiving_email_address"].replace(" ", "")
+            forwarding_mailbox = data["forwarding_mailbox"].replace(" ", "")
             try:
-                batch_send.send(email_address, password, receiving_email_address, mailbox)
+                batch_send.send(forwarding_email_address, forwarding_password, forwarding_receiving_email_address, forwarding_mailbox)
             except Exception as e:
                 print("Error sending mail:" + str(e))
                 traceback.print_exc()
