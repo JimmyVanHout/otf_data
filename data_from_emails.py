@@ -124,7 +124,7 @@ def pretty_print_errors(errors, column_labels):
             print(row[i] + " " + arrow_and_label)
         print()
 
-def get_message_search_str(only_new, data_file_name, originating_email_address):
+def get_search_start_datetime(only_new, data_file_name):
     search_start_datetime = None
     if only_new:
         if data_file_name:
@@ -138,6 +138,9 @@ def get_message_search_str(only_new, data_file_name, originating_email_address):
                             search_start_datetime = dt
         else:
             raise(Exception("Request was for only new dates to be searched for but data file name was not given"))
+    return search_start_datetime
+
+def get_message_search_str(search_start_datetime, originating_email_address):
     search_str = "(FROM \"" + originating_email_address + "\""
     if search_start_datetime:
         search_str += " SINCE \"" + datetime.datetime.strftime(search_start_datetime.date(), "%d-%b-%Y") + "\""
@@ -166,12 +169,13 @@ def get_data_from_emails(email_address, password, originating_email_addresses, m
             imap4ssl.select()
         else:
             imap4ssl.select(mailbox)
+        search_start_datetime = None
+        try:
+            search_start_datetime = get_search_start_datetime(only_new, data_file_name)
+        except Exception as e:
+            raise
         for originating_email_address in originating_email_addresses:
-            search_str = ""
-            try:
-                search_str = get_message_search_str(only_new, data_file_name, originating_email_address)
-            except Exception as e:
-                raise
+            search_str = get_message_search_str(search_start_datetime, originating_email_address)
             message_ids = imap4ssl.search(None, search_str)[1][0].split()
             print("For " + originating_email_address + ", found " + str(len(message_ids)) + " messages")
             count = 1
