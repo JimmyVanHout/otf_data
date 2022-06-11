@@ -190,8 +190,8 @@ def get_data_from_emails(email_address, password, originating_email_addresses, m
     except Exception as e:
         raise Exception("Error interacting with mail server or processing data: " + str(e))
     remove_duplicates(rows)
-    sort_rows(rows)
     errors = remove_errors(rows)
+    sort_rows(rows)
     rows = [COLUMN_LABELS] + rows
     print("\nFound and removed " + str(len(errors)) + " data frames with errors\n")
     print("Error rate: {error_rate:.2f}%\n".format(error_rate=((len(errors) / len(rows)) * 100)))
