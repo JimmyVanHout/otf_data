@@ -1,6 +1,6 @@
 # OTF Data
 
-Create a CSV file from OrangeTheory Fitness workout summary emails using a browser-based UI.
+Create a CSV file from OrangeTheory Fitness workout summary emails using a browser-based UI. Optionally, after running the program, upload the file to [OTFitnessData.com](https://www.otfitnessdata.com).
 
 ## Installation
 
