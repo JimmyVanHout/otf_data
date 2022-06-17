@@ -72,8 +72,7 @@ def get_row_from_data(data, data_indices):
             row.append(text[i])
     return row
 
-def find_row_specific_errors(row):
-    row_specific_errors = []
+def get_indices_to_patterns():
     location_pattern = re.compile(r"^(?:.*? \w{2})*$")
     date_pattern = re.compile(r"^(?:\d{1,2}\/\d{1,2}\/\d{4})*$")
     time_of_day_pattern = re.compile(r"^(?:\d{1,2}:\d{2} (?:A|P)M)*$")
@@ -92,18 +91,33 @@ def find_row_specific_errors(row):
     for pattern, indices in patterns_indices:
         for index in indices:
             indices_to_patterns[index] = pattern
+    return indices_to_patterns
+
+def find_row_specific_errors(row, indices_to_patterns=None):
+    row_specific_errors = []
+    required_indices_errors = {
+        0: "MISSING REQUIRED LOCATION",
+        1: "MISSING REQUIRED DATE",
+        2: "MISSING REQUIRED START TIME",
+    }
+    if not indices_to_patterns:
+        indices_to_patterns = get_indices_to_patterns()
     for index, pattern in indices_to_patterns.items():
         if index < len(row):
             m = pattern.search(row[index])
             if not m:
                 row_specific_errors.append((index, row[index]))
+        else:
+            if index <= 2:
+                row_specific_errors.append((index, required_indices_errors[index]))
     return row_specific_errors
 
 def remove_errors(rows):
     indices_to_remove = []
     errors = {}
+    indices_to_patterns = get_indices_to_patterns()
     for i in range(len(rows)):
-        row_specific_errors = find_row_specific_errors(rows[i])
+        row_specific_errors = find_row_specific_errors(rows[i], indices_to_patterns)
         if len(row_specific_errors) != 0:
             indices_to_remove.append(i)
             errors[i] = (rows[i], row_specific_errors)
