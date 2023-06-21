@@ -1,0 +1,129 @@
+body {
+    background-color: white;
+}
+h1 {
+    font-family: arial;
+    color: #ED7010;
+    font-size: 48px;
+    text-align: center;
+}
+h2 {
+    font-family: arial;
+    color: #ED7010;
+    font-size: 28px;
+}
+label {
+    font-family: arial;
+    font-size: 16px;
+}
+input[type=text] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 12px 0px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #F1F1F1;
+    color: #ED7010;
+    font-family: arial;
+    font-size: 18px;
+}
+input[type=email] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 12px 0px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #F1F1F1;
+    color: #ED7010;
+    font-family: arial;
+    font-size: 18px;
+}
+input[type=password] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 12px 0px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #F1F1F1;
+    color: #ED7010;
+    font-family: arial;
+    font-size: 18px;
+}
+input[type=submit] {
+    width: 100%;
+    background-color: #ED7010;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px 16px;
+    margin: 12px 0px;
+    cursor: pointer;
+    font-family: arial;
+    font-size: 16px;
+}
+input[type=submit]:hover {
+    background-color: #DC7322;
+    color: white;
+}
+.error_message {
+    color: red;
+    font-family: arial;
+    font-size: 16px;
+}
+#input_form_div {
+    color: black;
+    padding: 20px;
+    width: 40%;
+    margin: auto;
+}
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+    }
+    input[type=text] {
+        width: 100%;
+        padding: 8px 12px;
+        margin: 12px 0px;
+        border: none;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background-color: #323232;
+        color: #ED7010;
+        font-family: arial;
+        font-size: 18px;
+    }
+    input[type=email] {
+        width: 100%;
+        padding: 8px 12px;
+        margin: 12px 0px;
+        border: none;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background-color: #323232;
+        color: #ED7010;
+        font-family: arial;
+        font-size: 18px;
+    }
+    input[type=password] {
+        width: 100%;
+        padding: 8px 12px;
+        margin: 12px 0px;
+        border: none;
+        box-sizing: border-box;
+        border-radius: 4px;
+        background-color: #323232;
+        color: #ED7010;
+        font-family: arial;
+        font-size: 18px;
+    }
+    #input_form_div {
+        color: white;
+        padding: 20px;
+        width: 40%;
+        margin: auto;
+    }
+}

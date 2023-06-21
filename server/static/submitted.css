@@ -1,0 +1,18 @@
+body {
+    background-color: white;
+}
+p {
+    font-family: arial;
+    color: #ED7010;
+    font-size: 36px;
+    text-align: center;
+}
+.submitted_text {
+    padding: 20px;
+    vertical-align: middle;
+}
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+    }
+}
