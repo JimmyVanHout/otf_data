@@ -1,5 +1,7 @@
 # OTF Data
 
+> **Notice:** This repository has been archived and will no longer be maintained. The [repository](https://github.com/JimmyVanHout/ot_fitness_data) for the associated site, [OTFitnessData.com](https://www.otfitnessdata.com), will also no longer be maintained, and the site will no longer be hosted.
+
 Create a CSV file from OrangeTheory Fitness workout summary emails using a browser-based UI. Optionally, after running the program, upload the file to [OTFitnessData.com](https://www.otfitnessdata.com).
 
 ## Installation
